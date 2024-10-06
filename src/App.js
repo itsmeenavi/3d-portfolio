@@ -1,43 +1,53 @@
-// App.js
+// src/App.js
 import React, { useState } from 'react';
 import './App.css';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import Scene from './Scene';
+import Navbar from './components/Navbar';
+import Scene from './components/Scene';
+import Home from './components/pages/Home';
+import Aboutme from './components/pages/Aboutme';
+import Projects from './components/pages/Projects';
+import Skills from './components/pages/Skills';
+import Experience from './components/pages/Experience';
+import Certificates from './components/pages/Certificates';
+import Resume from './components/pages/Resume';
+import Contact from './components/pages/Contact';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('home');
+  const [activePage, setActivePage] = useState('Home');
 
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
+  const renderPageContent = () => {
+    switch (activePage) {
+      case 'Home':
+        return <Home />;
+      case 'About Me':
+        return <Aboutme />;
+      case 'Projects':
+        return <Projects />;
+      case 'Skills':
+        return <Skills />;
+      case 'Experience':
+        return <Experience />;
+      case 'Certificates':
+        return <Certificates />;
+      case 'Resume':
+        return <Resume />;
+      case 'Contact':
+        return <Contact />;
+      default:
+        return <Home />;
+    }
   };
 
   return (
     <div className="App">
-      {/* Navbar */}
-      <nav className="navbar">
-        <ul>
-          <li onClick={() => handleTabClick('home')}>Home</li>
-          <li onClick={() => handleTabClick('projects')}>Projects</li>
-          <li onClick={() => handleTabClick('about')}>About Me</li>
-          {/* Add more tabs as needed */}
-        </ul>
-      </nav>
-
-      {/* Greeting */}
-      {activeTab === 'home' && (
-        <div className="greeting">
-          <h1>Hi, I am Navi</h1>
+      <Navbar activePage={activePage} setActivePage={setActivePage} />
+      <div className="content-container">
+        <div className="page-content">
+          {renderPageContent()}
         </div>
-      )}
-
-      {/* 3D Scene */}
-      <div className="canvas-container">
-        <Canvas>
-          <ambientLight intensity={0.5} />
-          <Scene activeTab={activeTab} />
-          <OrbitControls enablePan={false} enableZoom={false} />
-        </Canvas>
+        <div className="canvas-container">
+          <Scene activePage={activePage} />
+        </div>
       </div>
     </div>
   );
